@@ -2,6 +2,8 @@
 
 docker-compose up -d (no diretório que contém o arquivo docker-compose.yaml)
 
+localhost:8080
+
 # Banco de dados
 
 Entrar no container mysql
