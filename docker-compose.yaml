@@ -1,0 +1,40 @@
+version: '3'
+
+networks:
+        nginx-net:
+                driver: bridge
+
+services:
+        nginx:
+                image: nginx
+                volumes:
+                        - ./nginx.conf:/etc/nginx/nginx.conf
+                ports:
+                        - 8080:80
+                networks:
+                        - nginx-net
+        
+        mysql:
+                image: mysql:5.7
+                command: --innodb-use-native-aio=0l
+                restart: always
+                tty: true
+                volumes:
+                        - ./mysql:/var/lib/mysql
+                environment:
+                        - MYSQL_DATABASE=nodedb
+                        - MYSQL_ROOT_PASSWORD=root
+                networks:
+                        - nginx-net
+
+        node-1:
+                build:
+                        context: ./node
+                        dockerfile: ./Dockerfile.prod
+                networks:
+                        - nginx-net
+                volumes:
+                        - ./node:/usr/srv/app
+                tty: true
+                depends_on:
+                        - mysql
