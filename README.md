@@ -1,4 +1,8 @@
-# Node + Mysql
+# NGINX + Node + Mysql
+
+docker-compose up -d (no diretório que contém o arquivo docker-compose.yaml)
+
+# Banco de dados
 
 Entrar no container mysql
 mysql -u root -p
