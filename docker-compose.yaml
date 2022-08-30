@@ -33,6 +33,10 @@ services:
                         dockerfile: ./Dockerfile.prod
                 networks:
                         - nginx-net
+                volumes:
+                        - ./node:/usr/src/app
                 tty: true
+                # entrypoint: dockerize -wait tcp://mysql:3306 -timeout 20s docker-entrypoint.sh
+                entrypoint: dockerize -wait tcp://mysql:3306 -timeout 20s node index.js
                 depends_on:
                         - mysql
