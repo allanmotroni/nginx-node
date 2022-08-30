@@ -11,6 +11,19 @@ const config = {
 
 const mysql = require('mysql')
 
+let connection = mysql.createConnection(config)
+
+connection.connect(function (err) {
+
+    console.log('connect')
+    if (err) {
+        return console.error(err.message)
+    }
+
+    console.log('createTable')
+    createTable()
+})
+
 app.get('/', (req, res) => {
 
     const connection = mysql.createConnection(config)
@@ -56,3 +69,24 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Rodando na porta ${port}...`)
 })
+
+function createTable() {
+
+    try {
+        const sqlCreateTable = `CREATE TABLE IF NOT EXISTS people (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255), PRIMARY KEY(id))`
+        connection.query(sqlCreateTable, function (err, results, fields) {
+            if (err) {
+                console.error(`ERRO AO CRIAR TABELA: ${err.message}`)
+            }
+        })
+
+        connection.end(function (err) {
+            if (err) {
+                return console.error(`ERRO end: ${err.message}`)
+            }
+        })
+
+    } catch (error) {
+        console.error(`ERRO createTable: ${error}`)
+    }
+}
